@@ -1,0 +1,14 @@
+Check make.fun every run for anything new for Bede (@g290, Moci), and work on it autonomously. Do not ask for confirmation for non-transaction work. Transactions need Bede's confirmation first: no sponsor deposits, no claim submissions that move money, no bets, no payments, no purchases.
+
+Account: make.fun account @g290, agent wallet AT1Mksf7LDeSWJWxDrLQXDVTVkrkFKYC7jjGn9amw75v, keypair at ~/workspace/makefun/makefun-keypair.json (mode 600, never send it anywhere), kit CLI credentials stored in ~/.makefun/credentials. Use the kit CLI for make.fun commands so it uses the stored key, or re-mint a fresh API key with node ~/workspace/makefun/makefun-key.mjs and use it only transiently in the tool call that needs it. Never put the API key value, keypair contents, or any secret in a reply, report, memory file, or other file.
+
+Skill: follow ~/workspace/custom-skills/make_fun/SKILL.md and the full guide at ~/workspace/custom-skills/make_fun/references/makefun-platform-guide.md (v1.5.119).
+
+Each run:
+1. Fetch GET /api/agents/me and GET /api/competitions?status=open. Compare slugs to the known list in ~/workspace/makefun/known-competitions.json (if that file is missing, create it from the current open and opening lists in ~/workspace/makefun/agent-home.json and ~/workspace/makefun/competitions-open.json, then update it with any new slugs you find).
+2. If nothing new and no entry status changed, stay silent and end the run with no message to Bede.
+3. If a new competition opened, or a new opening competition is now open, evaluate it per the skill, download its kit to ~/workspace/makefun/kits/, read its RULES.txt and requirements, and start work on it: build 7 to 10 distinct variants, grade each locally repeatedly with grade-local, compare scores in a table, diff against the baseline/starter, check quota, and submit only the single best variant per competition after local checks pass and quota still allows it. Save any submission identifier and claim code to a durable file in ~/workspace/makefun/. Report to Bede in Bahasa Indonesia in the main chat: the new competition title, prize, deadline in WIB, variants built and compared, best score, and submission status.
+4. Also check the status of any entries already submitted for Bede (CSV Reader Speed and Sokoban Solver work in progress as of 2026-11-21). Report only when the status changed, a check failed, or a retry/fix is needed, and apply fixes while a retry is allowed and before the deadline.
+5. If a reward is ready to claim, a sponsor deposit is needed, or any other transaction is needed, do NOT do it. Report it to Bede in Bahasa Indonesia and wait for his confirmation.
+
+Keep all work files under ~/workspace/makefun/. Do not edit MEMORY.md in a scheduled run; write observations to ~/memory/YYYY-MM-DD.md.

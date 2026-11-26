@@ -22,6 +22,17 @@ if (REPLY.includes("\n") || REPLY !== REPLY.trim() || / {2,}/.test(REPLY)) {
   throw new Error("entry must be a single cleanly-spaced line");
 }
 
+// Tone guard: the reply must be exactly one sentence — exactly one
+// sentence-ending full stop, and it must be the final character — and it
+// must stay confessional, not apologetic: no "sorry" / "apolog*".
+const fullStops = (REPLY.match(/\./g) ?? []).length;
+if (fullStops !== 1 || !REPLY.endsWith(".")) {
+  throw new Error("entry must be exactly one sentence");
+}
+if (/\bsorry\b/i.test(REPLY) || /apolog/i.test(REPLY)) {
+  throw new Error("entry must be honest, not apologetic");
+}
+
 mkdirSync("/output", { recursive: true });
 writeFileSync("/output/entry.txt", REPLY, "utf8");
 
